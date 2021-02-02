@@ -1,0 +1,230 @@
+﻿<Page x:Class="Self_service_hotel_managment.View.MainView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Self_service_hotel_managment.View"
+      mc:Ignorable="d"
+      xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:wpfloadingindecators="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:localis="clr-namespace:Self_service_hotel_managment"
+      xmlns:viewmodel="clr-namespace:Self_service_hotel_managment.ViewModel"
+      d:DesignHeight="550"
+      d:DesignWidth="800">
+ <Grid attached:ControlHelper.LoadedAnimation="{StaticResource Fade}">
+  <Grid.RowDefinitions>
+   <RowDefinition Height="Auto" />
+   <RowDefinition />
+  </Grid.RowDefinitions>
+  <TextBlock DataContext="{x:Static viewmodel:NetworkConnectionVM.Instance }"
+             FontSize="22"
+             Background="{StaticResource AccentColorBrush}"
+             Padding="5"
+             Foreground="White">
+                    <iconPacks:PackIconModern Kind="ConnectionWifiVariant"
+                                              Visibility="{Binding IsConnectionAvailable, Converter={StaticResource BoolVisibility}}"
+                                              Width="20"
+                                              Height="20"
+                                              Foreground="White" />
+                    <iconPacks:PackIconModern Kind="NetworkDisconnect"
+                                              Visibility="{Binding IsConnectionAvailable, Converter={StaticResource ReversBoolVisibility}}"
+                                              Width="20"
+                                              Height="20"
+                                              Foreground="White" />
+                    <Run Text="{Binding Message, FallbackValue=Reconnect, Mode=OneWay, StringFormat=' \{0\}', TargetNullValue=Reconnect}" />
+                    <TextBlock Visibility="{Binding IsConnectionAvailable, Converter={StaticResource ReversBoolVisibility}}">
+                    <Hyperlink IsEnabled="{Binding IsReconnecting, Converter={StaticResource ReverseBool}}"
+                               Command="{Binding Path=ReconnectCommand}"
+                               Foreground="Black">
+                     Reconnect
+                    </Hyperlink>
+                    </TextBlock>
+                
+                    <wpfloadingindecators:LoadingIndicator Focusable="False"
+                                                           IsActive="{Binding IsReconnecting}"
+                                                           Foreground="White"
+                                                           Style="{StaticResource LoadingIndicatorThreeDots}" />
+         
+                </TextBlock>
+
+  <mah:HamburgerMenu IsEnabled="{Binding Source={x:Static viewmodel:NetworkConnectionVM.Instance},Path=IsConnectionAvailable}"
+                     ContentTransition="Up"
+                     ContentTemplate="{StaticResource HamburgerMenuCreatorsContentTemplate}"
+                     SelectedIndex="0"
+                     Content="{Binding RelativeSource={RelativeSource Mode=Self},Path=SelectedItem,Mode=OneWay,IsAsync=True}"
+                     IsPaneOpen="True"
+                     Grid.Row="1">
+   <mah:HamburgerMenu.OptionsItemsSource>
+    <mah:HamburgerMenuItemCollection>
+     <mah:HamburgerMenuIconItem Command="{x:Static  localis:TrayCommands.LogoutCommand }"
+                                Label="Logout">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconMaterial Kind="Logout"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                   Height="25"
+                                   Width="25" />
+
+      </mah:HamburgerMenuIconItem.Icon>
+     </mah:HamburgerMenuIconItem>
+     <mah:HamburgerMenuIconItem Command="{x:Static  localis:TrayCommands.CloseApplicationCommand }"
+                                Label="Exit">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconMaterial Kind="ExitToApp"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                   Height="25"
+                                   Width="25" />
+
+      </mah:HamburgerMenuIconItem.Icon>
+     </mah:HamburgerMenuIconItem>
+    </mah:HamburgerMenuItemCollection>
+   </mah:HamburgerMenu.OptionsItemsSource>
+
+   <mah:HamburgerMenu.ItemsSource>
+    <mah:HamburgerMenuItemCollection>
+
+     <mah:HamburgerMenuIconItem Label="Home">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconMaterial VerticalAlignment="Center"
+                                   Kind="Home"
+                                   Margin="0,0,5,0"
+                                   Height="25"
+                                   Width="25" />
+
+      </mah:HamburgerMenuIconItem.Icon>
+      <mah:HamburgerMenuIconItem.Tag>
+       <local:HomeView />
+      </mah:HamburgerMenuIconItem.Tag>
+     </mah:HamburgerMenuIconItem>
+     <mah:HamburgerMenuIconItem Label="Actuators">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconMaterial VerticalAlignment="Center"
+                                   Kind="Camcorder"
+                                   Margin="0,0,5,0"
+                                   Height="25"
+                                   Width="25" />
+
+      </mah:HamburgerMenuIconItem.Icon>
+      <mah:HamburgerMenuIconItem.Tag>
+       <local:Actuators />
+      </mah:HamburgerMenuIconItem.Tag>
+     </mah:HamburgerMenuIconItem>
+     <mah:HamburgerMenuIconItem  Label="Users">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconMaterial Kind="AccountGroup"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                   Height="25"
+                                   Width="25" />
+
+      </mah:HamburgerMenuIconItem.Icon>
+
+      <mah:HamburgerMenuIconItem.Tag>
+       <local:AccountsManagment />
+      </mah:HamburgerMenuIconItem.Tag>
+     </mah:HamburgerMenuIconItem>
+     <mah:HamburgerMenuIconItem  Label="Rooms">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconFontAwesome Kind="DoorClosedSolid"
+                                      VerticalAlignment="Center"
+                                      Margin="0,0,5,0"
+                                      Height="25"
+                                      Width="25" />
+
+      </mah:HamburgerMenuIconItem.Icon>
+
+      <mah:HamburgerMenuIconItem.Tag>
+       <local:RoomsManagment />
+      </mah:HamburgerMenuIconItem.Tag>
+     </mah:HamburgerMenuIconItem>
+     <mah:HamburgerMenuIconItem  Label="Reservations">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconMaterial Kind="LibraryBooks"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                   Height="25"
+                                   Width="25" />
+
+      </mah:HamburgerMenuIconItem.Icon>
+
+      <mah:HamburgerMenuIconItem.Tag>
+       <local:ReservationsManagment />
+      </mah:HamburgerMenuIconItem.Tag>
+     </mah:HamburgerMenuIconItem>
+
+     <mah:HamburgerMenuIconItem Label="Records">
+      <mah:HamburgerMenuIconItem.Icon>
+       <iconPacks:PackIconMaterial Kind="Database"
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,5,0"
+                                   Height="25"
+                                   Width="25" />
+      </mah:HamburgerMenuIconItem.Icon>
+      <mah:HamburgerMenuIconItem.Tag>
+       <local:RecordsManagment />
+      </mah:HamburgerMenuIconItem.Tag>
+     </mah:HamburgerMenuIconItem>
+    </mah:HamburgerMenuItemCollection>
+   </mah:HamburgerMenu.ItemsSource>
+  </mah:HamburgerMenu>
+  <Border Grid.RowSpan="3"
+          BorderThickness="1"
+          BorderBrush="Red"
+          DataContext="{x:Static viewmodel:NetworkConnectionVM.Instance}"
+          d:IsHidden="True"
+          Visibility="{Binding Path=IsConnectionAvailable,Converter={StaticResource ReversBoolVisibility}}">
+   <Border.Background>
+    <LinearGradientBrush EndPoint="0.5,1"
+                         StartPoint="0.5,0">
+     <GradientStop Color="#4CFF0000"
+                   Offset="0" />
+     <GradientStop Color="#4C000000"
+                   Offset="1" />
+    </LinearGradientBrush>
+   </Border.Background>
+   <!--d:IsHidden="True"
+          Visibility="{Binding Path=IsConnectionAvailable,Converter={StaticResource ReversBoolVisibility}}"-->
+
+   <TextBlock d:IsHidden="False"
+              Padding="40"
+              FontSize="15"
+              Background="{StaticResource BlackBrush }"
+              TextAlignment="Center"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              TextWrapping="Wrap"
+              Foreground="{StaticResource WhiteBrush}"
+              Grid.Row="1"
+              MinHeight="280">
+    <iconPacks:PackIconMaterial Kind="WifiStrength1Alert"
+                                Width="50"
+                                Height="50"
+                                Padding="0"
+                                Margin="0,0,30,0" /> 
+            <Run Text="Unable to connect to server"
+                 FontSize="22" />
+            <LineBreak />
+     <LineBreak />
+            Communication error occured please check your network settings
+             <LineBreak /> 
+             <LineBreak />
+             <Button Margin="0,10,0,0"
+                     Command="{Binding Path=ReconnectCommand}"
+                     Visibility="{Binding Path=IsReconnecting,Converter={StaticResource ReversBoolVisibility}}"
+                     Style="{StaticResource  AccentedFlatButtonStyle}"
+                     Content="Try again"
+                     Padding="30,5,30,5" />  
+                     <LineBreak />
+    <wpfloadingindecators:LoadingIndicator Style="{StaticResource LoadingIndicatorArcs}"
+                                           Visibility="{Binding Path=IsReconnecting,Converter={StaticResource BoolVisibility}}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+
+   </TextBlock>
+
+  </Border>
+ </Grid>
+</Page>

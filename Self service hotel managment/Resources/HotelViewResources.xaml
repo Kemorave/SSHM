@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dbmodels="clr-namespace:HMSDataRepo.Model;assembly=HMSDataRepo"
+                      xmlns:recognition="clr-namespace:DeviceUtil.Recognition;assembly=DeviceUtil"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+    <DataTemplate DataType="{x:Type recognition:LiveRecognitionUnit}">
+        <mah:Tile>
+            
+        </mah:Tile>
+    </DataTemplate>
+</ResourceDictionary>

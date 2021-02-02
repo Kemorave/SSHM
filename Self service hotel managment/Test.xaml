@@ -1,0 +1,25 @@
+﻿<mah:MetroWindow xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                 x:Class="Self_service_hotel_managment.Test"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:vd="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:local="clr-namespace:Self_service_hotel_managment"
+                 xmlns:common="clr-namespace:Self_service_hotel_managment.Common"
+                 xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                 mc:Ignorable="d"
+                 Title="Test"
+                 Height="450"
+                 Background="{DynamicResource WhiteBrush}"
+                 x:Name="Window"
+                 DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}"
+                 Width="800">
+ <!--<common:FlowButton Command="{Binding  ElementName=Window,Path=StartCommand}"
+                 IsCancalable="True"   IsBusy="{Binding ElementName=Window,Path=IsBusy}"
+                    Value="{Binding ElementName=Window,Path=Progress}"
+                    CancelCommand="{Binding ElementName=Window,Path=CancelCommand}" />-->
+ <GeometryModel3D x:Name="MyGeometryModel3D">
+ 
+ </GeometryModel3D>
+</mah:MetroWindow>

@@ -1,0 +1,169 @@
+﻿<UserControl x:Class="Self_service_hotel_managment.View.RecordsManagment"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Self_service_hotel_managment.View"
+             mc:Ignorable="d"
+             xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:dbmodels="clr-namespace:HMSDataRepo.Model;assembly=HMSDataRepo"
+             xmlns:vaildation="clr-namespace:Self_service_hotel_managment.Common.VaildationRule"
+             xmlns:vm="clr-namespace:VM"
+             xmlns:wpf="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             DataContext="{x:Static vm:AppData.Instance }"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+ <UserControl.Resources>
+  <Style x:Key="DefaultRowStyle"
+         TargetType="{x:Type DataGridRow}"
+         BasedOn="{StaticResource {x:Type DataGridRow}}">
+  <Style.Triggers>
+    <DataTrigger Binding="{Binding Path=Type}"
+                 Value="Reservation">
+     <Setter Property="Background"
+             Value="#4C00A2FF" />
+    </DataTrigger>
+    <DataTrigger Binding="{Binding Path=Type}"
+                 Value="Login">
+     <Setter Property="Background"
+             Value="#4C535353" />
+    </DataTrigger>
+    <DataTrigger Binding="{Binding Path=Type}"
+                 Value="Door activity">
+     <Setter Property="Background"
+             Value="#4CFFD100" />
+    </DataTrigger>
+   </Style.Triggers>
+  </Style>
+ </UserControl.Resources>
+ <Grid>
+  <Grid.RowDefinitions>
+   <RowDefinition Height="Auto" />
+   <RowDefinition />
+  </Grid.RowDefinitions>
+  <DockPanel Background="{StaticResource GrayBrush9}">
+   <StackPanel Orientation="Horizontal"
+               DockPanel.Dock="Left">
+    <iconPacks:PackIconOcticons Kind="Archive"
+                                Width="30"
+                                Height="30"
+                                VerticalContentAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                Margin="10,0" />
+    <TextBlock Text="All records"
+               FontSize="20"
+               VerticalAlignment="Center" />
+    <wpf:LoadingIndicator Style="{StaticResource LoadingIndicatorThreeDots}"
+                          IsActive="{Binding IsLoadingRecords,Mode=OneWay}"
+                          Foreground="{StaticResource BlackBrush}"
+                          Margin="10,0,0,0" />
+   </StackPanel>
+   <mah:DropDownButton Content="{iconPacks:Material Kind=DotsVertical}"
+                       ArrowVisibility="Collapsed"
+                       Background="{x:Null}"
+                       BorderThickness="0"
+                       DockPanel.Dock="Right"
+                       Width="50">
+    <mah:DropDownButton.Items>
+     <MenuItem Header="Refresh"
+               Command="{Binding Path=RefreshRecordsCommand}">
+      <MenuItem.Icon>
+       <iconPacks:PackIconMaterial Kind="Refresh" />
+      </MenuItem.Icon>
+     </MenuItem>
+    </mah:DropDownButton.Items>
+   </mah:DropDownButton>
+   <ComboBox DockPanel.Dock="Right"
+             VerticalAlignment="Top"
+             ItemStringFormat="Search By {0}"
+             SelectedIndex="0"
+             x:Name="SU"
+             Margin="5,5,10,5"
+             mah:TextBoxHelper.Watermark="Search unit">
+
+    <system:String>
+     ID
+    </system:String>
+    <system:String>
+     Content
+    </system:String>
+    <system:String>
+     Type
+    </system:String>
+    <system:String>
+     Date
+    </system:String>
+   </ComboBox>
+   <Button IsDefault="True"
+           Style="{StaticResource  MetroFlatButtonStyle}"
+           Command="{Binding Path=RecordsList.SearchCommand}"
+           Content="{iconPacks:Material Kind=TableSearch}"
+           CommandParameter="{Binding ElementName=SU,Path=SelectedItem}"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center"
+           DockPanel.Dock="Right" />
+   <TextBox Text="{Binding Path=RecordsList.SearchValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+            mah:TextBoxHelper.ClearTextButton="True"
+            mah:TextBoxHelper.Watermark="Search"
+            Style="{DynamicResource MetroButtonTextBox}"
+            mah:TextBoxHelper.ButtonCommand="{Binding RecordsList.CancelSearchCommand}"
+            Width="150"
+            Margin="0"
+            DockPanel.Dock="Right"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center">
+
+    <mah:TextBoxHelper.ButtonContentTemplate>
+     <DataTemplate>
+      <iconPacks:PackIconMaterial  Kind="Close" />
+     </DataTemplate>
+    </mah:TextBoxHelper.ButtonContentTemplate>
+   </TextBox>
+  </DockPanel>
+
+  <DataGrid IsReadOnly="True"
+            CanUserAddRows="False"
+            VirtualizingPanel.IsVirtualizing="True"
+            VirtualizingPanel.VirtualizationMode="Recycling"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+             EnableRowVirtualization="True"
+            ScrollViewer.CanContentScroll="True"
+            MaxWidth="2560"
+            MaxHeight="1600"
+            CanUserDeleteRows="False"
+            AutoGenerateColumns="False" RowStyle="{StaticResource DefaultRowStyle}"
+            ItemsSource="{Binding  RecordsList,IsAsync=True}"
+            Grid.Row="1">
+   <DataGrid.RowDetailsTemplate>
+    <DataTemplate>
+     <TextBlock FontSize="14"
+                Padding="5"
+                Text="{Binding Path=Content}" />
+    </DataTemplate>
+   </DataGrid.RowDetailsTemplate>
+   <DataGrid.Columns>
+    <DataGridTextColumn Header="ID"
+                        Binding="{Binding Path=ID}" />
+    <DataGridTextColumn Header="Person ID"
+                        Binding="{Binding Path=Person_Id}" />
+    <DataGridTextColumn Header="Type"
+                        MinWidth="50"
+                        Binding="{Binding Path=Type}" />
+    <DataGridTextColumn Header="Date"
+                        MinWidth="150"
+                        Binding="{Binding Path=Date}" />
+   </DataGrid.Columns>
+   <DataGrid.ItemsPanel>
+    <ItemsPanelTemplate>
+     <VirtualizingStackPanel />
+    </ItemsPanelTemplate>
+   </DataGrid.ItemsPanel>
+  </DataGrid>
+
+ </Grid>
+</UserControl>

@@ -1,0 +1,77 @@
+﻿<mah:CustomDialog x:Class="Self_service_hotel_managment.View.Dialog.RoomCamerInfoDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:Self_service_hotel_managment.View.Dialog"
+                  mc:Ignorable="d"
+                  xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                  xmlns:vd="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                  xmlns:dbmodels="clr-namespace:HMSDataRepo.Model;assembly=HMSDataRepo"
+                  xmlns:vaildation="clr-namespace:Self_service_hotel_managment.Common.VaildationRule"
+                  xmlns:vm="clr-namespace:VM"
+                  xmlns:wpf="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
+                  xmlns:deviceutil="clr-namespace:DeviceUtil;assembly=DeviceUtil"
+                  x:Name="Dialog"
+                  HorizontalAlignment="Center"
+                  Opacity="1"
+                  Style="{StaticResource  FullDialogStyle}">
+
+ <StackPanel DataContext="{Binding ElementName=Dialog}"
+             MinWidth="300"
+             HorizontalAlignment="Center"
+             Margin="5">
+  
+  <StackPanel Background="{StaticResource ResourceKey=AccentColorBrush}"
+              Orientation="Horizontal"
+              MaxWidth="300">
+   <iconPacks:PackIconMaterial Kind="CameraMeteringPartial"
+                               Width="30"
+                               Margin="3"
+                               Height="30" />
+   <TextBlock Text="  Details"
+              FontSize="022"
+              VerticalAlignment="Center" />
+  </StackPanel>
+  <TextBlock Padding="5"
+             MaxWidth="300"
+             TextWrapping="Wrap"       Background="{StaticResource AccentColorBrush4}">
+
+  <Run FontWeight="DemiBold" Text="Camera name:" />
+  <LineBreak />
+  <Run Text="{Binding  Path=RoomDevices.Camera.Name,Mode=OneWay,FallbackValue='HP 2MB micro'}" />
+   <LineBreak />
+  <Run FontWeight="DemiBold"
+       Text="Is WebCam:" />
+  <LineBreak />
+  <Run Text="{Binding  Path=RoomDevices.Camera.IsWebCam,Mode=OneWay,FallbackValue='True'}" />
+  <LineBreak />
+  <Run  FontWeight="DemiBold"
+        Text="Device Path:" />
+  <LineBreak />
+  <Run Text="{Binding  Path=RoomDevices.Camera.DevicePath,Mode=OneWay,FallbackValue='41541wdwd4scw'}" />
+  </TextBlock>
+
+  <ComboBox ItemsSource="{Binding Path=RoomsList,Mode=OneWay}"
+            SelectedItem="{Binding ElementName=Dialog,Path=RoomDevices.Room_Id,Mode=TwoWay}" 
+       x:Name="RoomsSelector"     ItemStringFormat="Room ID {0}"
+            mah:TextBoxHelper.Watermark="Assosiated room"
+            Margin="0,10" />
+
+ 
+  <StackPanel Orientation="Horizontal">
+
+   <Button Margin="10"
+           Padding="20,0"
+           Click="Confirm"
+           Content="Confirm" />
+   <Button Margin="10"
+           Padding="20,0"
+           Click="Cancel"
+           Content="Cancel" />
+  </StackPanel>
+
+ </StackPanel>
+</mah:CustomDialog>

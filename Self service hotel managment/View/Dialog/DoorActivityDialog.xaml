@@ -1,0 +1,46 @@
+﻿<mah:CustomDialog xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                  x:Class="Self_service_hotel_managment.View.Dialog.DoorActivityDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+          xmlns:winace="clr-namespace:WinPace.Helper"        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:Self_service_hotel_managment.View.Dialog"
+                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                  mc:Ignorable="d"
+                  Opacity="1"
+                  d:DesignHeight="450"
+                  d:DesignWidth="800"
+                  x:Name="Dialog" 
+                  DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+ <TextBlock FontSize="23" >
+<iconPacks:PackIconModern Height="20"
+                          Width="20"
+                          Kind="DoorEnter" />  <Run Text="Door activity" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Camera,StringFormat='Camera : {0}',Mode=OneWay}" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Person.PersonName,StringFormat='Person Name : {0}',Mode=OneWay}" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Person.Email,StringFormat='Email : {0}',Mode=OneWay}" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Person.ID,StringFormat='Person ID : {0}',Mode=OneWay}"
+       TextDecorations="Underline" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Reservation.Room_Id,StringFormat='Room ID : {0}',Mode=OneWay}"
+       TextDecorations="Underline" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Reservation.ID,StringFormat='Reservation ID : {0}',Mode=OneWay}"
+       TextDecorations="Underline" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Reservation.IsAvailable,StringFormat='Is Reservation Available : {0}',Mode=OneWay}"
+       Foreground="#FFFF4545" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Reservation.ReadableTimeLeft,StringFormat='Time Left : {0}',Mode=OneWay}"
+       Foreground="#FFFF9700" />
+  <LineBreak />
+  <Run Text="{Binding ElementName=Dialog,Path=Reservation.TotalPrice,StringFormat='Payment : {0}',Mode=OneWay}"
+       Foreground="#FF2CFF3F" />
+       <LineBreak />
+       <Button Content="Ok" Command="{x:Static winace:MahDialogHelper.CloseDialogCommand}" CommandParameter="{Binding ElementName=Dialog}" Margin="5" Padding="50,3,50,3"/>
+ </TextBlock>
+</mah:CustomDialog>

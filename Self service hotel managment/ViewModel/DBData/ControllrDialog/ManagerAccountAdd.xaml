@@ -1,0 +1,179 @@
+﻿<mah:CustomDialog x:Name="Dialog"
+                  x:Class="Self_service_hotel_managment.ViewModel.DBData.ControllrDialog.ManagerAccountAdd"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Self_service_hotel_managment.ViewModel.DBData.ControllrDialog"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+          xmlns:mahdialog="clr-namespace:WinPace.Helper"   xmlns:dbmodels="clr-namespace:HMSDataRepo.Model;assembly=HMSDataRepo"
+             xmlns:vaildation="clr-namespace:Self_service_hotel_managment.Common.VaildationRule"
+             xmlns:recognition="clr-namespace:DeviceUtil.Recognition;assembly=DeviceUtil"
+             xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+             mc:Ignorable="d"
+             d:DataContext="{x:Type dbmodels:People}"
+             Opacity="1"
+             Style="{StaticResource   FullDialogStyle}"
+                  HorizontalAlignment="Center"
+                  Padding="0">
+    <StackPanel HorizontalAlignment="Center">
+        <DockPanel>
+            <TextBlock FontSize="20"
+                       Padding="5"
+                       Text="New manager"
+                       DockPanel.Dock="Top"
+                       Foreground="#FF41B1E1"
+                        />
+            <Grid DockPanel.Dock="Top"
+                  HorizontalAlignment="Center"
+                  Margin="0,10,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                  <Ellipse Name="A"
+                         StrokeThickness="1"
+                         Stroke="#FF00C0FF"
+                         Width="200"
+                         Height="200">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="/Self service hotel managment;component/Resources/HD (18) .png"
+                                    Stretch="UniformToFill" />
+                    </Ellipse.Fill>
+                </Ellipse>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            Margin="0,5">
+                    <Button  Style="{StaticResource    CircleButtonStyle}"
+                             ToolTip="Change image"
+                             Width="40"
+                             Height="40"
+                             Margin="0,0,10,0">
+                        <iconPacks:PackIconMaterial Kind="TooltipImage" />
+                    </Button>
+                    <Button Style="{StaticResource   CircleButtonStyle}"
+                            ToolTip="Clear"
+                            Width="40"
+                            Height="40"
+                            Margin="10,0,0,0">
+                        <iconPacks:PackIconMaterial Kind="ImageOff" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+            <TextBox x:Name="NameBox"
+                     MaxLength="150"
+                     mah:TextBoxHelper.Watermark="Name"
+                     mah:TextBoxHelper.AutoWatermark="True"
+                     mah:TextBoxHelper.IsMonitoring="True"
+                     mah:TextBoxHelper.UseFloatingWatermark="True"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.SelectAllOnFocus="True"
+                     mah:TextBoxHelper.HasText="True"
+                     Margin="20,5"
+                     DockPanel.Dock="Top"
+                     Width="380">
+                <TextBox.Text>
+                    <Binding Path="PersonName"
+                             Mode="TwoWay"  UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <vaildation:NullValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <TextBox x:Name="EmailBox"
+                     MaxLength="100"
+                     mah:TextBoxHelper.Watermark="Email"
+                     mah:TextBoxHelper.AutoWatermark="True"
+                     mah:TextBoxHelper.IsMonitoring="True"
+                     mah:TextBoxHelper.UseFloatingWatermark="True"
+                     mah:TextBoxHelper.ClearTextButton="True"
+                     mah:TextBoxHelper.SelectAllOnFocus="True"
+                     mah:TextBoxHelper.HasText="True"
+                     Margin="20,5"
+                     DockPanel.Dock="Top"
+                     Width="380">
+                <TextBox.Text>
+                    <Binding Path="Email"
+                             Mode="TwoWay">
+                        <Binding.ValidationRules>
+                            <vaildation:EmailValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <PasswordBox x:Name="PasswordBox"
+                         mah:TextBoxHelper.Watermark="Password"
+                         mah:TextBoxHelper.UseFloatingWatermark="True"
+                         mah:PasswordBoxHelper.CapsLockWarningToolTip="True"
+                         mah:TextBoxHelper.ClearTextButton="True"
+                         mah:TextBoxHelper.SelectAllOnFocus="True" 
+                         Margin="20,5"
+                         DockPanel.Dock="Top"
+                         Width="380"
+                         MaxLength="10" />
+
+            <Button Content="Add account"
+                    Width="Auto"
+                    Click="Button_Click"
+                    Height="Auto"
+                    Margin="55,5,5,10"
+                    MinWidth="100"
+                    VerticalAlignment="Center">
+                <Button.Style>
+                    <Style TargetType="Button"
+                           BasedOn="{StaticResource AccentedFlatButtonStyle}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=NameBox,Path=(Validation.HasError)}"
+                                         Value="True">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=EmailBox,Path=(Validation.HasError)}"
+                                         Value="True">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=PasswordBox,Path=(Validation.HasError)}"
+                                         Value="True">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+
+
+                            <DataTrigger Binding="{Binding ElementName=NameBox,Path=(mah:TextBoxHelper.HasText)}"
+                                         Value="False">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=EmailBox,Path=(mah:TextBoxHelper.HasText)}"
+                                         Value="False">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=PasswordBox,Path=(mah:TextBoxHelper.HasText)}"
+                                         Value="False">
+                                <Setter Property="IsEnabled"
+                                        Value="False" />
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button Style="{StaticResource   MetroFlatButtonStyle}"
+                   Command="{Binding Source={x:Static mahdialog:MahDialogHelper.CloseDialogCommand }}" Content="Cancel"
+                 CommandParameter="{Binding ElementName=Dialog}"   Width="Auto"
+                    FontSize="14"
+                    Height="Auto"
+                    Margin="0,5,5,10"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="15,5" />
+        </DockPanel>
+
+    </StackPanel>
+
+</mah:CustomDialog>

@@ -1,0 +1,214 @@
+﻿<Page x:Class="Self_service_hotel_managment.View.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Self_service_hotel_managment.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:wpfK="clr-namespace:WPFMediaKit.DirectShow.Controls;assembly=WPFMediaKit"
+      xmlns:view="clr-namespace:Self_service_hotel_managment.View"
+      xmlns:wpfloadingindecators="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:viewmodel="clr-namespace:Self_service_hotel_managment.ViewModel"
+      xmlns:Effects="clr-namespace:KemoTools.Effects;assembly=KemoTools"
+      Title="Main">
+
+ <Grid>
+  <Grid.RowDefinitions>
+   <RowDefinition Height="Auto" />
+   <RowDefinition />
+  </Grid.RowDefinitions>
+  <Grid.ColumnDefinitions>
+   <ColumnDefinition Width="Auto" />
+   <ColumnDefinition />
+  </Grid.ColumnDefinitions>
+  <StackPanel 
+              Width="300"
+              Grid.RowSpan="2">
+   <StackPanel.Resources>
+    <Style TargetType="Button"
+           BasedOn="{StaticResource AccentedFlatButtonStyle}">
+     <Setter Property="Margin"
+             Value="5" />
+     <Setter Property="Foreground"
+             Value="{StaticResource TextBrush}" />
+    </Style>
+   </StackPanel.Resources>
+   <Ellipse x:Name="ProfileElipse"
+            StrokeThickness="1"
+            Stroke="#FF00C0FF"
+            Width="280"
+            Height="280"
+            Margin="0,100,0,0">
+
+    <Ellipse.Fill>
+     <ImageBrush ImageSource="/Self service hotel managment;component/Resources/HD (18) .png"
+                 Stretch="UniformToFill" />
+    </Ellipse.Fill>
+   </Ellipse>
+   <TextBlock TextAlignment="Center"
+              FontSize="22"
+              Margin="0,10"><Run Text="Kemorave " /><LineBreak /><LineBreak /><Run FontWeight="Bold"
+                                                                                   FontSize="18"
+                                                                                   Text="API Activities :" /><LineBreak /><InlineUIContainer>
+                      <Button FontSize="15"
+                              Click="Button_Click_1"
+                              Foreground="White"
+                              Content="Add Manager Accound Dialog" />
+                     </InlineUIContainer><LineBreak Foreground="White" /><InlineUIContainer> 
+                      <Button FontSize="15"
+                              Click="Button_Click_2"
+                              Foreground="White"
+                              Content="Edit Manager Accound Dialog" />
+                     </InlineUIContainer></TextBlock>
+
+  </StackPanel>
+
+  <StackPanel Background="{StaticResource AccentColorBrush}"
+              DataContext="{Binding Source={x:Static viewmodel:NetworkConnectionVM.Instance}}"
+              Grid.Column="1">
+   <mah:ToggleSwitch  Padding="5"
+                      IsChecked="{Binding Path=IsEnabled}"
+                      FontSize="16"
+                      Content="Network activity"
+                      Foreground="#FFB40000"
+                      HorizontalAlignment="Left" />
+   <TextBlock FontSize="22"
+              Visibility="{Binding IsEnabled,Converter={StaticResource BoolVisibility}}"
+              Padding="5"
+              Foreground="White">
+                    <iconPacks:PackIconModern Kind="ConnectionWifiVariant"
+                                              Visibility="{Binding IsConnectionAvailable, Converter={StaticResource BoolVisibility}}"
+                                              Width="30"
+                                              Height="30"
+                                              Foreground="White" />
+                    <iconPacks:PackIconModern Kind="NetworkDisconnect"
+                                              Visibility="{Binding IsConnectionAvailable, Converter={StaticResource ReversBoolVisibility}}"
+                                              Width="30"
+                                              Height="30"
+                                              Foreground="White" />
+                    <Run Text="{Binding Message, FallbackValue=Reconnect, Mode=OneWay, StringFormat=' \{0\}', TargetNullValue=Reconnect}" />
+                    <TextBlock Visibility="{Binding IsConnectionAvailable, Converter={StaticResource ReversBoolVisibility}}">
+                    <Hyperlink IsEnabled="{Binding IsReconnecting, Converter={StaticResource ReverseBool}}"
+                               Command="{Binding Path=ReconnectCommand}"
+                               Foreground="Black">
+                     Reconnect
+                    </Hyperlink>
+                    </TextBlock>
+                
+                    <wpfloadingindecators:LoadingIndicator Focusable="False"
+                                                           IsActive="{Binding IsReconnecting}"
+                                                           Foreground="White"
+                                                           Style="{StaticResource LoadingIndicatorThreeDots}" />
+         
+                </TextBlock>
+   <mah:Badged x:Name="Badge"
+               Background="Transparent"
+               ToolTip="The big brother is watching"
+               Badge="No QRCode detected"
+               BadgePlacementMode="Top"
+               FontSize="22"
+               VerticalAlignment="Center"
+               Margin="0,16,0,0"
+               HorizontalContentAlignment="Center">
+    <iconPacks:PackIconModern Kind="Eye"
+                              Width="30"
+                              Height="30"
+                              Foreground="#FF191919"
+                              Margin="0,15,0,5">
+     <iconPacks:PackIconModern.Triggers>
+      <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+       <BeginStoryboard>
+        <Storyboard>
+         <ColorAnimation Duration="00:00:10"
+                         RepeatBehavior="Forever"
+                         SpeedRatio="3"
+                         Storyboard.TargetProperty="(Foreground).(SolidColorBrush.Color)"
+                         From="Black"
+                         To="Red" />
+        </Storyboard>
+       </BeginStoryboard>
+      </EventTrigger>
+     </iconPacks:PackIconModern.Triggers>
+    </iconPacks:PackIconModern>
+
+   </mah:Badged>
+
+  </StackPanel>
+  <StackPanel Grid.Row="1"
+              Grid.Column="1"
+              Margin="10">
+   <StackPanel Orientation="Horizontal">
+    <Border Margin="10"
+            Width="316"
+            Background="Gray"
+            Height="316">
+     <ContentControl x:Name="VidCont" />
+    </Border>
+    <Border Padding="2"
+            BorderThickness="1"
+            Width="Auto"
+            ToolTip="Take a picture and show it to the camera"
+            Height="Auto"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            BorderBrush="{DynamicResource Accent}">
+     <Image Margin="5"
+            x:Name="ImageBox"
+            Width="300"
+            Height="300" />
+
+    </Border>
+   </StackPanel>
+   <TextBox   mah:TextBoxHelper.Watermark="Content"
+              x:Name="TargetBox"
+              Margin="10"
+              Width="300"
+              HorizontalAlignment="Center" />
+   <Button IsDefault="True"
+           IsEnabled="{Binding  ElementName=TargetBox,Path=(mah:TextBoxHelper.HasText)}"
+           Click="QRButton"
+           Width="180"
+           Margin="10"
+           FontSize="15"
+           HorizontalAlignment="Center">
+    <TextBlock>
+                                    <iconPacks:PackIconMaterial  Kind="QrcodeEdit"
+                                                                 Margin="0,2,5,0" />
+                                    Create QRCode
+    </TextBlock>
+   </Button>
+  </StackPanel>
+  <TextBlock Text="{Binding ElementName=Badge,Path=Badge}"
+             FontSize="22"
+             Padding="5"
+             Background="{StaticResource BlackBrush }"
+             
+             Grid.ColumnSpan="2"
+             Grid.RowSpan="2"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center">
+   <TextBlock.Triggers>
+    <EventTrigger RoutedEvent="SizeChanged">
+     <BeginStoryboard>
+      <Storyboard>
+       <DoubleAnimation  Storyboard.TargetProperty="Opacity"
+                         From="0"
+                         To="1"
+                         AutoReverse="True"
+                         Duration="00:00:3" />
+       <DoubleAnimation  Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                         To="0"
+                         From="{StaticResource ResourceKey=TValue}"
+                         Duration="{StaticResource ResourceKey=TransistTime}" />
+      </Storyboard>
+     </BeginStoryboard>
+    </EventTrigger>
+   </TextBlock.Triggers>
+  </TextBlock>
+ </Grid>
+
+</Page>

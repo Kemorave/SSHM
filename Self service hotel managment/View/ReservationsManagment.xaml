@@ -1,0 +1,176 @@
+﻿<UserControl x:Class="Self_service_hotel_managment.View.ReservationsManagment"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Self_service_hotel_managment.View"
+             mc:Ignorable="d"
+             xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:dbmodels="clr-namespace:HMSDataRepo.Model;assembly=HMSDataRepo"
+             xmlns:vaildation="clr-namespace:Self_service_hotel_managment.Common.VaildationRule"
+             xmlns:vm="clr-namespace:VM"
+             xmlns:wpf="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
+             xmlns:system="clr-namespace:System;assembly=mscorlib"
+             DataContext="{x:Static vm:AppData.Instance }"
+             d:DesignHeight="450" 
+             d:DesignWidth="800">
+ <UserControl.Resources>
+  <ContextMenu  x:Key="RowMenu"
+                DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+  <MenuItem Header="Delete"
+             Command="{Binding Source={x:Static vm:AppData.Instance},Path=DeleteCommand}"
+             CommandParameter="{Binding}" />
+  </ContextMenu>
+  <Style x:Key="DefaultRowStyle"
+         TargetType="{x:Type DataGridRow}"
+         BasedOn="{StaticResource {x:Type DataGridRow}}">
+   <Setter Property="ContextMenu"
+           Value="{StaticResource RowMenu}" />
+   <Style.Triggers>
+    <DataTrigger Binding="{Binding Path=IsAvailable}" Value="False">
+     <Setter Property="Background"
+             Value="#4CFF0000" />
+    </DataTrigger>
+   </Style.Triggers>
+  </Style>
+ </UserControl.Resources>
+ <Grid>
+  <Grid.RowDefinitions>
+   <RowDefinition Height="Auto" />
+   <RowDefinition />
+  </Grid.RowDefinitions>
+  <DockPanel Background="{StaticResource GrayBrush9}">
+   <StackPanel Orientation="Horizontal"
+               DockPanel.Dock="Left">
+    <iconPacks:PackIconMaterial Kind="LibraryBooks"  Width="30"
+                                Height="30"
+                                VerticalContentAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                HorizontalAlignment="Stretch"
+                                Margin="10,0" />
+    <TextBlock Text="All Reservation"
+               FontSize="20"
+               VerticalAlignment="Center" />
+    <wpf:LoadingIndicator Style="{StaticResource LoadingIndicatorThreeDots}"
+                          IsActive="{Binding IsLoadingResrvations,Mode=OneWay}"
+                          Foreground="{StaticResource BlackBrush}"
+                          Margin="10,0,0,0" />
+
+   </StackPanel>
+   <mah:DropDownButton Content="{iconPacks:Material Kind=DotsVertical}"
+                       ArrowVisibility="Collapsed"
+                       Background="{x:Null}"
+                       BorderThickness="0"
+                       DockPanel.Dock="Right"
+                       Width="50">
+    <mah:DropDownButton.Items>
+     <MenuItem Header="Refresh"
+               Command="{Binding Path=RefreshReservationsCommand}">
+      <MenuItem.Icon>
+       <iconPacks:PackIconMaterial Kind="Refresh" />
+      </MenuItem.Icon>
+     </MenuItem>
+    </mah:DropDownButton.Items>
+   </mah:DropDownButton>
+   <ComboBox DockPanel.Dock="Right"
+             VerticalAlignment="Top"
+             ItemStringFormat="Search By {0}"
+             SelectedIndex="0"
+             x:Name="SU"
+             Margin="5,5,10,5"
+             mah:TextBoxHelper.Watermark="Search unit">
+
+   
+    <system:String>
+     ID
+    </system:String>
+    <system:String>
+     Person_Id
+    </system:String>
+    <system:String>
+     Room_Id
+    </system:String>
+    <system:String>
+     TimeLeft
+    </system:String>
+   </ComboBox>
+   <Button IsDefault="True"
+           Style="{StaticResource  MetroFlatButtonStyle}"
+           Command="{Binding Path=ReservationsList.SearchCommand}"
+           Content="{iconPacks:Material Kind=AccountSearch}"
+           CommandParameter="{Binding ElementName=SU,Path=SelectedItem}"
+           HorizontalAlignment="Center"
+           VerticalAlignment="Center"
+           DockPanel.Dock="Right" />
+   <TextBox Text="{Binding Path=ReservationsList.SearchValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+            mah:TextBoxHelper.ClearTextButton="True"
+            mah:TextBoxHelper.Watermark="Search"
+            Style="{DynamicResource MetroButtonTextBox}"
+            mah:TextBoxHelper.ButtonCommand="{Binding ReservationsList.CancelSearchCommand}"
+            Width="150"
+            Margin="0"
+            DockPanel.Dock="Right"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center">
+
+    <mah:TextBoxHelper.ButtonContentTemplate>
+     <DataTemplate>
+      <iconPacks:PackIconMaterial  Kind="Close" />
+     </DataTemplate>
+    </mah:TextBoxHelper.ButtonContentTemplate>
+   </TextBox>
+  </DockPanel>
+
+  <DataGrid x:Name="RoomsList"
+            RowStyle="{StaticResource DefaultRowStyle}"
+            IsReadOnly="True"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            Style="{StaticResource  AzureDataGridStyle}"
+            AutoGenerateColumns="False"
+            EnableColumnVirtualization="True"
+            EnableRowVirtualization="True"
+            ScrollViewer.CanContentScroll="True"
+            MaxWidth="2560"
+            MaxHeight="1600"
+            ItemsSource="{Binding Path=ReservationsList,IsAsync=True}" 
+            Grid.Row="1">
+   <DataGrid.RowDetailsTemplate>
+    <DataTemplate>
+     <TextBlock FontSize="14"
+                Padding="5"
+                Text="{Binding Path=ReadableTimeElapsed}" />
+    </DataTemplate>
+   </DataGrid.RowDetailsTemplate>
+
+   <DataGrid.InputBindings>
+    <KeyBinding Key="Delete"
+                CommandParameter="{Binding ElementName=RoomsList,Path=SelectedItems}"
+                Command="{Binding Path=DeleteCommand}" />
+    </DataGrid.InputBindings>
+   <DataGrid.Columns>
+    <DataGridTextColumn Header="ID"
+                        Binding="{Binding Path=ID}" />
+    <DataGridTextColumn Header="Person ID"
+                        Binding="{Binding Path=Person_Id}" />
+    <DataGridTextColumn Header="Room ID"
+                        Binding="{Binding Path=Room_Id}" />
+    <DataGridTextColumn Header="Date"
+                        Width="80"
+                        Binding="{Binding Path=StartDate}" />
+    <DataGridTextColumn Header="Days"
+                        Binding="{Binding Path=Days}" />
+    <DataGridTextColumn Header="Time left"
+                        Binding="{Binding Path=ReadableTimeLeft}" />
+    <DataGridTextColumn Header="Price"
+                        Binding="{Binding Path=TotalPrice}" />
+    <DataGridCheckBoxColumn Header="Is available"
+                        Binding="{Binding Path=IsAvailable,Mode=OneWay}" />
+   </DataGrid.Columns>
+  </DataGrid>
+
+ </Grid>
+</UserControl>

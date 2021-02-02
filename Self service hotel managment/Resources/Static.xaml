@@ -1,0 +1,45 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+       xmlns:wpfloadingindecators="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
+                                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Self_service_hotel_managment.Resources"
+                    xmlns:Converters="clr-namespace:KemoTools.Converters;assembly=KemoTools">
+    <Converters:BoolToVisibility x:Key="BoolVisibility" />
+    <Converters:ReversBoolToVisibility x:Key="ReversBoolVisibility" />
+    <Converters:ReverseVisibility x:Key="ReverseVisibility" />
+    <Converters:ReverseBool x:Key="ReverseBool" />
+    <Converters:NumToVisibility x:Key="NumToVisibility" />
+    <Converters:PercentValueToDigitValue x:Key="ToDigitValue" />
+    <Converters:ToPercentageValue x:Key="ToPercentageValue" />
+    <Converters:ToSizeSuffix x:Key="ToSizeSuffix" />
+    <Converters:NumToVisibility x:Key="NumVisibility" />
+    <Converters:ReverseNumToVisibility x:Key="ReverseNumVisibility" />
+    <Converters:ColorToColorBrush x:Key="ColorToColorBrush" />
+    <Converters:PercentageToColor x:Key="PercentageToColor" />
+    <Converters:ReversePercentageToColor x:Key="ReversePercentageToColor" />
+    <Converters:ObjectsToArrayOfObjects x:Key="ToObjectsArray" />
+    <Converters:PathToName x:Key="PathToName" />
+    <Converters:EnumToArray x:Key="EnumToArray" />
+    <Converters:ToParentPath x:Key="ToParentPath" />
+
+    <Style x:Key="LoadingIndicatorArcs"
+        TargetType="{x:Type wpfloadingindecators:LoadingIndicator}"
+        BasedOn="{StaticResource LoadingIndicatorArcsStyle}" />
+    <Style x:Key="LoadingIndicatorArcsRing"
+        TargetType="{x:Type wpfloadingindecators:LoadingIndicator}"
+        BasedOn="{StaticResource LoadingIndicatorArcsRingStyle}" />
+    <Style x:Key="LoadingIndicatorDoubleBounce"
+        TargetType="{x:Type wpfloadingindecators:LoadingIndicator}"
+        BasedOn="{StaticResource LoadingIndicatorDoubleBounceStyle}" />
+    <Style x:Key="LoadingIndicatorFlipPlane"
+        TargetType="{x:Type wpfloadingindecators:LoadingIndicator}"
+        BasedOn="{StaticResource LoadingIndicatorFlipPlaneStyle}" />
+    <Style x:Key="LoadingIndicatorPulse"
+        TargetType="{x:Type wpfloadingindecators:LoadingIndicator}"
+        BasedOn="{StaticResource LoadingIndicatorPulseStyle}" />
+    <Style x:Key="LoadingIndicatorRing"
+        TargetType="{x:Type wpfloadingindecators:LoadingIndicator}"
+        BasedOn="{StaticResource LoadingIndicatorRingStyle}" />
+    <Style x:Key="LoadingIndicatorThreeDots"
+        TargetType="{x:Type wpfloadingindecators:LoadingIndicator}"
+        BasedOn="{StaticResource LoadingIndicatorThreeDotsStyle}" />
+</ResourceDictionary>

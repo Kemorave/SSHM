@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="Self_service_hotel_managment.View.Login"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Self_service_hotel_managment.View"
+             mc:Ignorable="d"
+             xmlns:vm="clr-namespace:VM"
+             xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:model="clr-namespace:HMSDataRepo.Model;assembly=HMSDataRepo"
+             xmlns:wpf="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
+             DataContext="{x:Static vm:AppData.Instance }">
+ <Grid attached:ControlHelper.LoadedAnimation="{StaticResource Fade}">
+
+  <Grid.RowDefinitions>
+   <RowDefinition Height="50*" />
+   <RowDefinition Height="50*" />
+  </Grid.RowDefinitions>
+  <Rectangle Fill="{StaticResource AccentColorBrush}"
+             Grid.Row="1" />
+  <TextBlock FontSize="50"
+             Foreground="{StaticResource AccentColorBrush}"
+             Padding="20">
+   <TextBlock.Effect>
+    <DropShadowEffect ShadowDepth="03"
+                      BlurRadius="10"
+                      Opacity="0.2" />
+   </TextBlock.Effect> 
+         <Image Width="100"
+                Height="100"
+                HorizontalAlignment="Right"
+                Source="/Self service hotel managment;component/Resources/ssh.png" />  
+            <Run Text="{StaticResource ResourceKey=HottelName}" /> 
+            <LineBreak />
+         <iconPacks:PackIconOcticons Kind="Shield"
+                                     Width="25"
+                                     Height="25" />   <Run Text="Managment"
+                                                           FontSize="30" />
+  </TextBlock>
+
+  <Border BorderThickness="1"
+          CornerRadius="1"
+          HorizontalAlignment="Center"
+          Background="{StaticResource ControlBackgroundBrush}"
+          Width="500"
+          VerticalAlignment="Center"
+          Grid.RowSpan="2"
+          Margin="0,170,0,0"
+          MinHeight="300">
+   <Border.BorderBrush>
+    <LinearGradientBrush EndPoint="0.5,1"
+                         StartPoint="0.5,0">
+     <GradientStop Color="#FF41B1E1" />
+     <GradientStop Color="White"
+                   Offset="1" />
+    </LinearGradientBrush>
+   </Border.BorderBrush>
+
+   <StackPanel>
+    <TextBlock FontSize="20"
+               Padding="5"
+               Text=" Adminstration Login"
+               DockPanel.Dock="Top"
+               Foreground="#FF41B1E1" />
+    <Separator DockPanel.Dock="Top" />
+    <wpf:LoadingIndicator IsActive="{Binding Path=IsBusy,Mode=OneWay}"
+                          Margin="10"
+                          Style="{StaticResource LoadingIndicatorThreeDots}" />
+    <iconPacks:PackIconFontAwesome DockPanel.Dock="Top"
+                                   Kind="UserCircleSolid"
+                                   Foreground="#FF6C6C6C"
+                                   HorizontalAlignment="Center"
+                                   Width="100"
+                                   Height="100"
+                                   Margin="5" />
+    <TextBox x:Name="EmailBox"
+             mah:TextBoxHelper.Watermark="Email"
+             mah:TextBoxHelper.AutoWatermark="True"
+             mah:TextBoxHelper.IsMonitoring="True"
+             mah:TextBoxHelper.UseFloatingWatermark="True"
+             mah:TextBoxHelper.ClearTextButton="True"
+             mah:TextBoxHelper.SelectAllOnFocus="True"
+             mah:TextBoxHelper.HasText="True"
+             Margin="20,5"
+             DockPanel.Dock="Top"
+             Width="300" />
+    <PasswordBox mah:TextBoxHelper.Watermark="Password"
+                 mah:TextBoxHelper.UseFloatingWatermark="True"
+                 x:Name="PassBox"
+                 mah:PasswordBoxHelper.CapsLockWarningToolTip="True"
+                 mah:TextBoxHelper.ClearTextButton="True"
+                 mah:TextBoxHelper.SelectAllOnFocus="True"
+                 mah:TextBoxHelper.HasText="True"
+                 Margin="20,5"
+                 DockPanel.Dock="Top"
+                 Width="300" />
+
+    <Button Content="Signin"
+            Width="Auto"
+            Style="{StaticResource MetroFlatButtonStyle}"
+            Height="Auto"
+        IsDefault="True" IsEnabled="{Binding Path=IsBusy,Converter={StaticResource ReverseBool}}"    MinWidth="100"
+            VerticalAlignment="Center"
+            Margin="10"
+            Click="TryLogin"
+            HorizontalAlignment="Center" />
+
+
+   </StackPanel>
+
+  </Border>
+
+ </Grid>
+</UserControl>

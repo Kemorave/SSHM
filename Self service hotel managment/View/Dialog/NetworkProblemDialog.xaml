@@ -1,0 +1,86 @@
+﻿<mah:CustomDialog x:Name="Dialog"
+                  x:Class="Self_service_hotel_managment.View.Dialog.NetworkProblemDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                  xmlns:local="clr-namespace:Self_service_hotel_managment.View.Dialog"
+                  mc:Ignorable="d"
+                  xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+                  xmlns:mahdialog="clr-namespace:WinPace.Helper"
+                  xmlns:dbmodels="clr-namespace:HMSDataRepo.Model;assembly=HMSDataRepo"
+                  xmlns:vaildation="clr-namespace:Self_service_hotel_managment.Common.VaildationRule"
+                  xmlns:recognition="clr-namespace:DeviceUtil.Recognition;assembly=DeviceUtil"
+                  xmlns:attached="clr-namespace:KemoTools.AttachedProperties;assembly=KemoTools"
+                  xmlns:viewmodel="clr-namespace:Self_service_hotel_managment.ViewModel"
+                  DataContext="{Binding Source={x:Static viewmodel:NetworkConnectionVM.Instance }}"
+                  Opacity="1"
+                  Style="{StaticResource   FullDialogStyle}"
+                  HorizontalAlignment="Center">
+    <mah:CustomDialog.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="20" />
+            <Setter Property="Padding"
+                    Value="18" />
+            <Setter Property="TextAlignment"
+                    Value="Center" />
+        </Style>
+    </mah:CustomDialog.Resources>
+    <TextBlock TextWrapping="Wrap"
+               Width="400"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center">
+        <Run Text="Can't Connect To Internet" /> 
+        <LineBreak />
+        <LineBreak />
+        <iconPacks:PackIconMaterial Kind="EmoticonSad"
+                                    HorizontalAlignment="Center"
+                                    Width="80"
+                                    Height="80" />
+        <LineBreak />
+        <LineBreak />
+         You are currentlty offline and no changes will be saved.
+        
+        <LineBreak />
+        Please check your 
+        <Hyperlink>
+            Nettwork Settings
+        </Hyperlink>
+        and  
+            Firewall Settings 
+        to solve the issue
+        <LineBreak />
+        <LineBreak />
+      <iconPacks:PackIconModern attached:ControlHelper.LoadedAnimation="{StaticResource FadeToRight}"
+                                Kind="NetworkDisconnect"
+                                Width="200"
+                                Height="200"
+                                Foreground="{DynamicResource AccentColorBrush}">
+          <iconPacks:PackIconModern.RenderTransform>
+              <TranslateTransform />
+          </iconPacks:PackIconModern.RenderTransform>
+      </iconPacks:PackIconModern>
+        <LineBreak />
+        <LineBreak />
+        <Run Text="Connection problem"
+             FontSize="22" />
+        <LineBreak />
+        <LineBreak />
+<Button Content="Retry Cennecting"
+        Padding="30,6">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Click">
+                 <i:InvokeCommandAction Command="{Binding Path=ReconnectCommand}" />
+       <i:InvokeCommandAction CommandParameter="{Binding ElementName=Dialog}"
+                                   Command="{x:Static mahdialog:MahDialogHelper.CloseDialogCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+</Button>
+<Button  CommandParameter="{Binding ElementName=Dialog}"
+         Command="{x:Static mahdialog:MahDialogHelper.CloseDialogCommand}"
+         Content="Close"
+        Padding="30,6" />
+    </TextBlock>
+</mah:CustomDialog>
